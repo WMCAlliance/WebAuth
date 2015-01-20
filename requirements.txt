@@ -1,0 +1,3 @@
+twisted
+Crypto
+MySQL-python
