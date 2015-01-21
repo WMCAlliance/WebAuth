@@ -1,7 +1,7 @@
 from quarry.net.server import ServerFactory, ServerProtocol
 import MySQLdb
 # ##
-### AUTH SERVER
+# ## AUTH SERVER
 ###   ask mojang to authenticate the user
 ###
 
@@ -75,9 +75,6 @@ class AuthProtocol(ServerProtocol):
             print " --> FAILED!"
             message = u"\u00A74Are you sure you own this account (" + username + u")? Try restarting your game!\n(this doesn't actually do anything yet, but it will!)"
 
-
-
-
         # Kick the player.
         self.close(message)
 
@@ -87,24 +84,11 @@ class AuthFactory(ServerFactory):
 
 
 def main(args):
-    # Parse options
-    import optparse
-
-    parser = optparse.OptionParser(
-        usage="usage: %prog server_auth "
-              "[options]")
-    parser.add_option("-a", "--host",
-                      dest="host", default="",
-                      help="address to listen on")
-    parser.add_option("-p", "--port",
-                      dest="port", default="25565", type="int",
-                      help="port to listen on")
-    (options, args) = parser.parse_args(args)
-
     # Create factory
     factory = AuthFactory()
-    factory.motd = "Auth Server"
+    factory.motd = MOTD
+    factory.favicon_path = FAVICON
 
     # Listen
-    factory.listen(options.host, options.port)
+    factory.listen(HOST, PORT)
     factory.run()
