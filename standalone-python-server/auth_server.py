@@ -9,7 +9,7 @@ HOST = "auth.yourserver.com"
 PORT = 25565
 MOTD = u"An awesome MOTD"
 FAVICON = None  # or a path to a 64x64 .png
-
+SITE_URL = "http://yoursite.com/register"
 
 class AuthProtocol(ServerProtocol):
     def player_joined(self):
@@ -25,8 +25,9 @@ class AuthProtocol(ServerProtocol):
         # Define your own logic here. It could be an HTTP request to an API,
         #   or perhaps an update to a database table.
         username = self.username
+        uuid =  self.uuid
         ip_addr = self.recv_addr.host
-        self.logger.info("[%s authed with IP %s]" % (username, ip_addr))
+        self.logger.info("[%s (%s) authed with IP %s]" % (username, uuid,  ip_addr))
 
         # MYSQL Here
         db = MySQLdb.connect(host="localhost", user="user", passwd="pass", db="database")
@@ -57,7 +58,7 @@ class AuthProtocol(ServerProtocol):
                 message = u"\u00A7eGood to see you own this account \u00A76" + username + u"\u00A7e!\n \u00A7eNow just click \u00A76Next\u00A7e on the website!"
             elif user.rowcount == 0:
                 print "The user has NOT been verified (doesn't exist)"
-                message = u"\u00A7eSorry \u00A76" + username + u"\u00A7e, apparently you haven't tried registering yet!\nVisit http://yoursite.com/register to begin the process."
+                message = u"\u00A7eSorry \u00A76" + username + u"\u00A7e, apparently you haven't tried registering yet!\nVisit "+ SITE_URL + "to begin the process."
             elif ip.rowcount == 1:
                 print "The user has NOT been verified (different ip)"
                 message = u"\u00A7eSorry \u00A76" + username + u"\u00A7e, it looks like you're connecting from a different IP!\nIf this is incorrect, contact a staff member."
